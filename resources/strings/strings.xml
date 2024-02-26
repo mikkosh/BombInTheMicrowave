@@ -1,5 +1,13 @@
 <strings>
-    <string id="AppName">BombInTheMicrowave</string>
+    <string id="AppName">Bomb In The Microwave</string><!-- used in manifest, displayname for icons etc -->
+    <string id="SplashAppName">Bomb 
+In The 
+Microwave</string><!-- we use this for splash screen -->
+
+    <string id="StartGame">New Game!</string>
+    <string id="ScoresTitle">Top 10</string>
+
+
 
     <string id="prompt">Click the menu button</string>
 
