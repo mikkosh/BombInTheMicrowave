@@ -1,0 +1,21 @@
+Drupal Restful Web Services curl example
+https://www.drupal.org/docs/drupal-apis/restful-web-services-api/restful-web-services-api-overview
+
+curl --include \
+  --request POST \
+  --user api:api \
+  --header 'Content-type: application/json' \
+  "http://localhost:8080/node/?_format=json" \
+  --data-binary @example_payload_rest.json
+
+
+Drupal JSON:API curl example
+https://www.drupal.org/docs/core-modules-and-themes/core-modules/jsonapi-module/creating-new-resources-post
+
+curl \
+    --user api:api \
+    --header 'Accept: application/vnd.api+json' \
+    --header 'Content-type: application/vnd.api+json' \
+    --header 'Authorization: Basic YXBpOmFwaQ==' \
+    --request POST http://localhost:8080/jsonapi/node/highscore \
+    --data-binary @example_payload.json
