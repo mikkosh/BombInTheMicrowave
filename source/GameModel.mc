@@ -2,6 +2,7 @@ import Toybox.Lang;
 import Toybox.System;
 import Toybox.Communications;
 import Toybox.Application.Storage;
+import Toybox.Timer;
 
 /**
  * Model for the game and application logic
@@ -11,14 +12,103 @@ class GameModel {
     private var _highScores as Array;
     private const STORAGE_HIGH_SCORES = "cache_high_scores";
     private var _isUpdating as Boolean = false; // indicates if we're currently updating data
+    private var _gameTimer as Timer.Timer;
+    private var _time as Number = 0;
+    private const _timeStep as Number = 50;
+    private var _countDown = 5;
+    private var _gameEventCallback as Method(e as GameEvent)?;
+
+    private var _roundsLeft as Number = 3;
+    private var _totalRounds as Number = 3;
+    private var _roundScore as Number = 0;
+
+    private var _handle as String = "PLR1";
 
     function initialize() {
+        _gameTimer = new Timer.Timer();
         _highScores = _getCachedHighScores();
 
         _downloadHighScores();
 
         // for testing : 
         // uploadHighScore("ciqman2",116);
+    }
+
+    public function newGame() as Void {
+        _roundsLeft = 3;
+        _roundScore = 0;
+    }
+    public function getRound() as Number {
+        return _totalRounds - _roundsLeft;
+    }
+    public function isGameOver() as Boolean {
+        return _roundsLeft == 0;
+    }
+
+    public function timeToScore(time as Number) as Number {
+        
+        if(time < 0) { // no scores for the busted
+            return 0;
+        } else if(time == 0) { // jackpot
+            return 1000;
+        } else if (time <= 50) {
+            return 500;
+        } else if (time <= 100){
+            return 100;
+        } else if (time <= 150){
+            return 50;
+        }
+        return 0;
+    }
+
+    public function addScore(score as Number) as Void{
+        _roundScore += score;
+    }
+
+    public function getScore() as Number {
+        return _roundScore;
+    }
+
+    public function getHandle() as String {
+        return _handle;
+    }
+
+    public function setHandle(handle as String) as Void {
+        _handle = handle;
+    }
+
+    public function startRound(eventCallback as Method(e as GameEvent)) as Void {
+        _roundsLeft--;
+
+        _time = 5000;
+        _countDown = (_time / 1000) as Number;
+        _gameEventCallback = eventCallback;
+        _gameTimer.start(method(:timerCallback), _timeStep, true);
+    }
+    public function timerCallback() as Void {
+        _time -= _timeStep;
+         if(_time < 0) {
+            var e = new GameEvent(GameEvent.BUSTED, {}); 
+            _roundsLeft = 0; // busted means game over
+            _gameEventCallback.invoke(e);
+            _gameTimer.stop();
+        } else if (_time%1000 < _timeStep){
+            System.println(_time);
+            _countDown--;
+            var e = new GameEvent(GameEvent.COUNTDOWN, {:countDown => _countDown}); 
+            _gameEventCallback.invoke(e);
+        }
+    }
+
+    public function disarmMicroWave() {
+        _gameTimer.stop();
+        var e;
+        if(_time < 0) {
+            e = new GameEvent(GameEvent.BUSTED, {});
+        } else {
+            e = new GameEvent(GameEvent.STOPPED, {:time => _time});
+        }
+        _gameEventCallback.invoke(e);
     }
 
     public function getHighScores() as Array {

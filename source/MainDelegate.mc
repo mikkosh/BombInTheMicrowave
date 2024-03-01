@@ -18,8 +18,9 @@ class MainDelegate extends WatchUi.BehaviorDelegate {
         return true;
     }
     public function onSelect() as Boolean{
-        
-        // WatchUi.switchToView(new GameView(), new GameDelegate(), SLIDE_LEFT);
+        var m = getApp().getModel();
+        m.newGame();
+        WatchUi.pushView(new GameView(), new GameDelegate(), SLIDE_LEFT);
         return true;
     }
 }
