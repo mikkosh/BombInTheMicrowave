@@ -11,7 +11,8 @@ class GameView extends WatchUi.View {
         STATE_NOT_STARTED,
         STATE_COUNTDOWN,
         STATE_END_STOPPED,
-        STATE_END_BUSTED
+        STATE_END_BUSTED,
+        STATE_END_EXITING
     }
     private var _gameState as State = STATE_NOT_STARTED;
     private var _lastEvent as GameEvent?;
@@ -38,35 +39,39 @@ class GameView extends WatchUi.View {
     function onUpdate(dc as Dc) as Void {
         // Call the parent onUpdate function to redraw the layout
         View.onUpdate(dc);
-        dc.setColor(Graphics.COLOR_WHITE,Graphics.COLOR_TRANSPARENT);
 
-        dc.drawText(10,20,Graphics.FONT_MEDIUM,"Round "+_model.getRound(),Graphics.TEXT_JUSTIFY_LEFT);
+        var dcW = dc.getWidth();
+        var dcH = dc.getHeight();
+
+        dc.setColor(Graphics.COLOR_WHITE,Graphics.COLOR_TRANSPARENT);
+        dc.drawText(dcW/2,20,Graphics.FONT_TINY,"Round "+_model.getRound(),Graphics.TEXT_JUSTIFY_CENTER|Graphics.TEXT_JUSTIFY_VCENTER);
 
         if(_gameState == STATE_NOT_STARTED) {
-
-            dc.drawText(10,100,Graphics.FONT_MEDIUM,"not started",Graphics.TEXT_JUSTIFY_LEFT);
+            dc.setColor(Graphics.COLOR_WHITE,Graphics.COLOR_TRANSPARENT);
+            dc.drawText(dcW/2,100,Graphics.FONT_MEDIUM,"Get Ready!!",Graphics.TEXT_JUSTIFY_CENTER|Graphics.TEXT_JUSTIFY_VCENTER);
 
         } else if(_gameState == STATE_COUNTDOWN) {
             var cdNro = 0;
             if(null != _lastEvent) {
                 cdNro = _lastEvent.getData()[:countDown];
             }
-            dc.drawText(10,100,Graphics.FONT_MEDIUM,"countdown: "+cdNro,Graphics.TEXT_JUSTIFY_LEFT);
+            dc.setColor(Graphics.COLOR_RED,Graphics.COLOR_TRANSPARENT);
+            dc.drawText(dcW/2,dcH/2,Graphics.FONT_NUMBER_THAI_HOT,cdNro,Graphics.TEXT_JUSTIFY_CENTER|Graphics.TEXT_JUSTIFY_VCENTER);
             
         } else if(_gameState == STATE_END_STOPPED) {
             var time = 99999;
             if(null != _lastEvent) {
                 time = _lastEvent.getData()[:time];
             }
-            dc.drawText(10,100,Graphics.FONT_MEDIUM,"Disarmed at",Graphics.TEXT_JUSTIFY_LEFT);
-            dc.drawText(10,150,Graphics.FONT_MEDIUM,time,Graphics.TEXT_JUSTIFY_LEFT);
+            dc.drawText(dcW/2,100,Graphics.FONT_MEDIUM,"Disarmed at",Graphics.TEXT_JUSTIFY_CENTER|Graphics.TEXT_JUSTIFY_VCENTER);
+            dc.drawText(dcW/2,150,Graphics.FONT_MEDIUM,time,Graphics.TEXT_JUSTIFY_CENTER|Graphics.TEXT_JUSTIFY_VCENTER);
 
-            _exitTimer.start(method(:exitTo), 1000, false);
+            
             
         } else if(_gameState == STATE_END_BUSTED) {
-            
-            dc.drawText(10,100,Graphics.FONT_MEDIUM,"busted!!!",Graphics.TEXT_JUSTIFY_LEFT);
-            _exitTimer.start(method(:exitTo), 1000, false);
+            dc.setColor(Graphics.COLOR_RED,Graphics.COLOR_TRANSPARENT);
+            dc.drawText(dcW/2,dcH/2,Graphics.FONT_MEDIUM,"BUSTED!!!1",Graphics.TEXT_JUSTIFY_CENTER|Graphics.TEXT_JUSTIFY_VCENTER);
+           
         }
 
     }
@@ -76,6 +81,7 @@ class GameView extends WatchUi.View {
         if(e.getType() == GameEvent.BUSTED) {
 
             _gameState = STATE_END_BUSTED;
+            _exitTimer.start(method(:exitTo), 1000, false);
 
         } else if (e.getType() == GameEvent.COUNTDOWN) {
             
@@ -86,7 +92,8 @@ class GameView extends WatchUi.View {
             _gameState = STATE_END_STOPPED;
             var time = e.getData()[:time];
             var rndScore = _model.timeToScore(time);
-             _model.addScore(rndScore);
+            _model.addScore(rndScore);
+            _exitTimer.start(method(:exitTo), 1000, false);
         }
         WatchUi.requestUpdate();
     }

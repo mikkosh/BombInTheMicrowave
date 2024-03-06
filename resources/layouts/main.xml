@@ -1,3 +1,4 @@
 <layout id="MainScreenLayout">
-    <label x="center" y="60%" text="@Strings.StartGame" color="Graphics.COLOR_WHITE" justification="Graphics.TEXT_JUSTIFY_CENTER|Graphics.TEXT_JUSTIFY_VCENTER" />
+    <bitmap id="mainscreenMW" filename="../drawables/mainscreen-mw.png" x="center" y="5%" />
+    <label x="center" y="75%" text="@Strings.StartGame" color="Graphics.COLOR_WHITE" justification="Graphics.TEXT_JUSTIFY_CENTER|Graphics.TEXT_JUSTIFY_VCENTER" />
 </layout>

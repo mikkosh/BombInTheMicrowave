@@ -1,6 +1,7 @@
 import Toybox.Graphics;
 import Toybox.WatchUi;
 import Toybox.Timer;
+import Toybox.Lang;
 
 class ScoreView extends WatchUi.View {
 
@@ -12,7 +13,7 @@ class ScoreView extends WatchUi.View {
 
     // Load your resources here
     function onLayout(dc as Dc) as Void {
-        setLayout(Rez.Layouts.ScoreLayout(dc));
+        //setLayout(Rez.Layouts.ScoreLayout(dc));
     }
 
     // Called when this View is brought to the foreground. Restore
@@ -33,12 +34,22 @@ class ScoreView extends WatchUi.View {
         var dcH = dc.getHeight();
         var dcW = dc.getWidth();
 
-        // determine where to start drawing our table with a known layout element
-        var startY = 0; 
-        var titleElement = findDrawableById("scoresTitle") as WatchUi.Text;
-        if(null != titleElement) {
-            startY = titleElement.locY + titleElement.height + 0;
-        }
+        var headingY = dcH*0.1;
+        var headingFont = Graphics.FONT_MEDIUM;
+        var scoresStart = headingY+dc.getFontHeight(headingFont);
+
+        _drawNiceBackground(dc, scoresStart);
+
+        var title = WatchUi.loadResource(Rez.Strings.ScoresTitle) as String;
+        dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_TRANSPARENT);
+        dc.drawText(dcW/2+5, headingY+5, headingFont, title, Graphics.TEXT_JUSTIFY_CENTER|Graphics.TEXT_JUSTIFY_VCENTER);
+
+        dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
+        dc.drawText(dcW/2, headingY, headingFont, title, Graphics.TEXT_JUSTIFY_CENTER|Graphics.TEXT_JUSTIFY_VCENTER);
+
+        dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_TRANSPARENT);
+       
+        
         // draw handles and scores in two columns
         var colFirstX = dcW * 0.25;
         var colSecondX = dcW * 0.75;
@@ -55,8 +66,8 @@ class ScoreView extends WatchUi.View {
                 rHandle = scores[i][0];
                 rScore = scores[i][1];
             }
-            dc.drawText(colFirstX, startY+i*rowHeight, fnt, rHandle, Graphics.TEXT_JUSTIFY_LEFT);
-            dc.drawText(colSecondX, startY+i*rowHeight, fnt, rScore, Graphics.TEXT_JUSTIFY_RIGHT);
+            dc.drawText(colFirstX, scoresStart+i*rowHeight, fnt, rHandle, Graphics.TEXT_JUSTIFY_LEFT);
+            dc.drawText(colSecondX, scoresStart+i*rowHeight, fnt, rScore, Graphics.TEXT_JUSTIFY_RIGHT);
         }
         if(m.isUpdating()) {
             refreshTimer = new Timer.Timer();
@@ -70,6 +81,19 @@ class ScoreView extends WatchUi.View {
             refreshTimer = null;
         }
         WatchUi.requestUpdate();
+    }
+
+    private function _drawNiceBackground(dc, firstLineY) {
+       
+        var rectY = firstLineY-5;
+        dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
+        dc.fillRoundedRectangle(dc.getWidth()*0.2, rectY, dc.getWidth()*0.6, dc.getHeight()-30, 10);
+        dc.setPenWidth(2);
+        dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_TRANSPARENT);
+        dc.drawRoundedRectangle(dc.getWidth()*0.2, rectY, dc.getWidth()*0.6, dc.getHeight()-30, 10);
+        dc.setColor(Graphics.COLOR_DK_GRAY, Graphics.COLOR_TRANSPARENT);
+        dc.setPenWidth(2);
+        dc.drawRoundedRectangle(dc.getWidth()*0.2+3, rectY+3, dc.getWidth()*0.6-6, dc.getHeight()-30-6, 10);
     }
 
     // Called when this View is removed from the screen. Save the

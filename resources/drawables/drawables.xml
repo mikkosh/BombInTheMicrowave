@@ -1,3 +1,5 @@
 <drawables>
     <bitmap id="LauncherIcon" filename="launcher_icon.png" />
+    <bitmap id="splashComic" filename="../drawables/splash-comic.png" />
+    <bitmap id="splashText" filename="../drawables/bombinmicrowave-text.png" />
 </drawables>
