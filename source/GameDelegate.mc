@@ -8,8 +8,6 @@ class GameDelegate extends WatchUi.BehaviorDelegate {
     }
 
     public function onSelect() as Boolean{
-        
-        // WatchUi.switchToView(new GameView(), new GameDelegate(), SLIDE_LEFT);
         var m = getApp().getModel();
         m.disarmMicroWave();
         return true;

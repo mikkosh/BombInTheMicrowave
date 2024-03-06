@@ -6,9 +6,8 @@
     <string id="StartGame">New Game!</string>
     <string id="ScoresTitle">Top 10</string>
 
-
-
-    <string id="prompt">Click the menu button</string>
+    <string id="Points">points</string>
+    <string id="TotalPoints">Total points</string>
 
     <string id="menu_label_1">Item 1</string>
     <string id="menu_label_2">Item 2</string>

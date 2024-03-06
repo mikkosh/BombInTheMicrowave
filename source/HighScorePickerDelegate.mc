@@ -8,14 +8,13 @@ class HighScorePickerDelegate extends WatchUi.TextPickerDelegate {
     }
 
     function onTextEntered(handle, changed) as Boolean {
-        //screenMessage = text + "\n" + "Changed: " + changed;
-        //lastText = text;
-        System.println("GOT TEXT "+handle);
+        
         var _m = getApp().getModel();
         _m.setHandle(handle);
         _m.uploadHighScore(handle, _score);
-       // WatchUi.popView(SLIDE_RIGHT); // this view
-        WatchUi.popView(SLIDE_RIGHT); // result view
+
+        // WatchUi.popView(SLIDE_RIGHT); // this view is popped automatically
+        WatchUi.popView(SLIDE_RIGHT); // pop the result view and get to the main screen
         return true;
     }
 

@@ -14,7 +14,7 @@ class ResultView extends WatchUi.View {
 
     // Load your resources here
     function onLayout(dc as Dc) as Void {
-        //setLayout(Rez.Layouts.MainScreenLayout(dc));
+        setLayout(Rez.Layouts.ResultLayout(dc));
     }
 
     // Called when this View is brought to the foreground. Restore
@@ -26,25 +26,36 @@ class ResultView extends WatchUi.View {
 
     // Update the view
     function onUpdate(dc as Dc) as Void {
-        // Call the parent onUpdate function to redraw the layout
         View.onUpdate(dc);
-        dc.setColor(Graphics.COLOR_PINK, Graphics.COLOR_TRANSPARENT);
-
-
+        
+        var rndScore = _model.timeToScore(_resultTime);
+        var rating = "";
         if(_resultTime < 0) {
-            dc.drawText(10,100,Graphics.FONT_MEDIUM,"The bomb exploded, beep beep!",Graphics.TEXT_JUSTIFY_LEFT);
+            rating = "Bomb exploded!!";
+        } else if(rndScore >= 500){
+            rating = "Excellent job!";
+        }else if(rndScore >= 100){
+            rating = "Good job!";
+        }else if(rndScore >= 50){
+            rating = "Bit too fast!";
         } else {
-            var rndScore = _model.timeToScore(_resultTime);
-            // never update model from the view, this will be called multiple times during execution!
-            dc.drawText(10,100,Graphics.FONT_MEDIUM,"Good job, you got "+rndScore+" points!",Graphics.TEXT_JUSTIFY_LEFT);
+            rating = "Could do better!";
         }
 
+        (findDrawableById("rating") as WatchUi.Text).setText(rating);
+        
+        var ptsTxt = WatchUi.loadResource(Rez.Strings.Points) as String;
+        (findDrawableById("pointText") as WatchUi.Text).setText(rndScore.toString()+" "+ptsTxt);;
+        
+        
         var totalScore = _model.getScore();
-        dc.drawText(10,150,Graphics.FONT_MEDIUM,"Total score "+totalScore,Graphics.TEXT_JUSTIFY_LEFT);
+        (findDrawableById("totalPointLabel") as WatchUi.Text).setText(totalScore.toString());
+
         if(_model.isGameOver())  {
-            dc.drawText(10,200,Graphics.FONT_MEDIUM,"Game over",Graphics.TEXT_JUSTIFY_LEFT);
+            (findDrawableById("gameOverLabel") as WatchUi.Text).setText("Game Over");
+
             if(_model.isHighScore(totalScore)) {
-                dc.drawText(10,230,Graphics.FONT_MEDIUM,"Highscore!!",Graphics.TEXT_JUSTIFY_LEFT);
+                (findDrawableById("highScoreLabel") as WatchUi.Text).setText("Highscore!!");
             }
         }
     }

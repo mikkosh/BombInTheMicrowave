@@ -2,4 +2,8 @@
     <bitmap id="LauncherIcon" filename="launcher_icon.png" />
     <bitmap id="splashComic" filename="../drawables/splash-comic.png" />
     <bitmap id="splashText" filename="../drawables/bombinmicrowave-text.png" />
+    
+    <drawable-list id="line">
+        <shape type="polygon" points="[[0%, 40%], [100%, 40%],[0%, 40%]]" color="Graphics.COLOR_DK_GRAY" />
+    </drawable-list>
 </drawables>

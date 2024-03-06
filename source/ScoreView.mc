@@ -13,7 +13,6 @@ class ScoreView extends WatchUi.View {
 
     // Load your resources here
     function onLayout(dc as Dc) as Void {
-        //setLayout(Rez.Layouts.ScoreLayout(dc));
     }
 
     // Called when this View is brought to the foreground. Restore

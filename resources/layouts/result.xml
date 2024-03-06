@@ -1,0 +1,12 @@
+<layout id="ResultLayout">
+    <label id="rating" x="center" y="20%" text="" color="Graphics.COLOR_WHITE" font="Graphics.FONT_MEDIUM" justification="Graphics.TEXT_JUSTIFY_CENTER|Graphics.TEXT_JUSTIFY_VCENTER" />
+    <label id="pointText" x="center" y="30%" text="" color="Graphics.COLOR_WHITE" font="Graphics.FONT_TINY" justification="Graphics.TEXT_JUSTIFY_CENTER|Graphics.TEXT_JUSTIFY_VCENTER" />
+
+    <drawable id="line" />
+
+    <label id="totalPointText" x="center" y="50%" text="@Strings.TotalPoints" color="Graphics.COLOR_WHITE" font="Graphics.FONT_MEDIUM" justification="Graphics.TEXT_JUSTIFY_CENTER|Graphics.TEXT_JUSTIFY_VCENTER" />
+    <label id="totalPointLabel" x="center" y="62%" text="" color="Graphics.COLOR_RED" font="Graphics.FONT_MEDIUM" justification="Graphics.TEXT_JUSTIFY_CENTER|Graphics.TEXT_JUSTIFY_VCENTER" />
+
+     <label id="gameOverLabel" x="center" y="75%" text="" color="Graphics.COLOR_LT_GRAY" font="Graphics.FONT_MEDIUM" justification="Graphics.TEXT_JUSTIFY_CENTER|Graphics.TEXT_JUSTIFY_VCENTER" />
+     <label id="highScoreLabel" x="center" y="85%" text="" color="Graphics.COLOR_PINK" font="Graphics.FONT_MEDIUM" justification="Graphics.TEXT_JUSTIFY_CENTER|Graphics.TEXT_JUSTIFY_VCENTER" />
+</layout>

@@ -7,7 +7,7 @@ class ResultDelegate extends WatchUi.BehaviorDelegate {
         BehaviorDelegate.initialize();
     }
 
-    
+     
     public function onBack() as Boolean{
         var _m = getApp().getModel();
         if(!_m.isGameOver()) {
@@ -24,5 +24,10 @@ class ResultDelegate extends WatchUi.BehaviorDelegate {
             
         }
         return true;
+    }
+    
+    // quick hack to enable one button play :)
+    public function onSelect() as Boolean {
+        return onBack();
     }
 }
