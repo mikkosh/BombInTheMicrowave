@@ -20,8 +20,8 @@ class BombInTheMicrowaveApp extends Application.AppBase {
     }
 
     // Return the initial view of your application here
-    function getInitialView() as Array<Views or InputDelegates>? {
-        return [ new SplashView() ] as Array<Views or InputDelegates>; // note, no delegate
+    function getInitialView() as [ WatchUi.Views ] or [ WatchUi.Views, WatchUi.InputDelegates ] {
+        return [ new SplashView() ] as [ WatchUi.Views ]; // note, no delegate
     }
 
     function getModel() as GameModel {
