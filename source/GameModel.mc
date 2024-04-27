@@ -182,6 +182,9 @@ class GameModel {
 
     public function isHighScore(score) {
         var isHighScore = false;
+        if(_highScores.size() < 11) { // fill the list first
+            return true;
+        }
         for(var i=0; i < _highScores.size(); i++) {
             // score is a high score if it's higher than any score on the current list
             if(score > _highScores[i][1]) {
